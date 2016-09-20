@@ -1,4 +1,5 @@
 require_relative 'nullpiece'
+require_relative 'piece'
 
 class Board
 
@@ -17,6 +18,10 @@ class Board
     rescue RunTimeError => e
       puts e.message
 
+  end
+
+  def add_piece(piece)
+    self[piece.position] = piece
   end
 
   def make_startin_grid

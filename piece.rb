@@ -1,6 +1,10 @@
+require 'byebug'
+require_relative 'board'
+require_relative 'nullpiece'
+
 class Piece
 
-
+  attr_reader :position, :color
   def initialize(color, board, position)
     @color = color
     @board = board
@@ -17,10 +21,21 @@ class Piece
   end
 
   def valid_moves
+    # byebug
+    moves = move_dirs
     valids = []
 
-    @moves.each do |pos|
-      valids << pos if @board[pos].empty? || @board[pos].color != color
+    moves.each do |key, value|
+      value.each do |pos|
+        if @board[pos].is_a?(NullPiece)
+          valids << pos
+        elsif @board[pos].color != @color
+          valids << pos
+          break
+        else
+          break
+        end
+      end
     end
 
     valids
@@ -35,14 +50,4 @@ class Piece
   def move_into_check?(to_pos)
 
   end
-
-
-end
-
-
-
-module SlidingPiece
-end
-
-module SteppingPiece
 end

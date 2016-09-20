@@ -4,11 +4,12 @@ require 'byebug'
 module Stepable
 
   def move_directions(constant)
-    moves = []
+    moves = {}
 
     constant.each do |direction|
       move = [@position[0] + direction[0], @position[1] + direction[1]]
-      moves << move if in_bound?(move)
+      moves[direction] ||= []
+      moves[direction] << move if in_bound?(move)
     end
 
     moves
@@ -17,8 +18,6 @@ module Stepable
   def in_bound?(move)
     move.none? {|pos| pos > 7 || pos < 0}
   end
-
-
 end
 
 class Knight < Piece
@@ -39,13 +38,22 @@ class Knight < Piece
     @color == :white ? ♘ : ♞
   end
 
-  def initialize(color, position)
-    @color = color
-    @position = position
-  end
-
   def move_dirs
     moves = move_directions(JUMPS)
+  end
+
+  def valid_moves
+    valids = []
+
+    move_dirs.each do |_,value|
+      value.each do |pos|
+        if @board[pos].is_a?(NullPiece) || @board[pos].color != color
+          valids << pos
+        end
+      end
+    end
+
+    valids
   end
 
 
@@ -76,5 +84,8 @@ class King < Piece
 
 end
 
-k = King.new(:white, [5,5])
-p k.move_dirs
+# board = Board.new
+# board.add_piece(Knight.new(:black, board, [7,4]))
+# k = Knight.new(:white, board,[5,5])
+# p k.move_dirs
+# p k.valid_moves

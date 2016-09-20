@@ -1,3 +1,5 @@
+require_relative 'piece'
+
 class Pawn
 
   def initialize
@@ -18,10 +20,12 @@ class Pawn
     [
       [@position[0] + 1, @position[1] + 1],
       [@position[0] + 1, @position[1] - 1]
-    ]
+    ].select do |pos|
+      @board[pos].color != color && !@board[pos].is_a?(NullObject)
+    end
   end
 
   def valid_attack?
-    side_attacks.select{ |pos| @board[pos].color != color } 
+    side_attacks.any?{ |pos| @board[pos].color != color }
   end
 end
