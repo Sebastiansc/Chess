@@ -1,10 +1,12 @@
+require_relative 'nullpiece'
+
 class Board
 
   attr_reader :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
-
+    make_startin_grid
   end
 
   def move_piece(color, start, end_pos)
@@ -17,8 +19,16 @@ class Board
 
   end
 
+  def make_startin_grid
+    positions.each{ |pos| self[pos] = NullPiece.instance }
+  end
+
+  def positions
+    @positions ||= (0..7).to_a.repeated_permutation(2).to_a
+  end
+
   def in_bounds(pos)
-    pos.none? {|position| position > 7 || position < 0}  
+    pos.none? {|position| position > 7 || position < 0}
   end
 
   def [](pos)

@@ -15,20 +15,24 @@ class Display
 
     @board.grid.each_with_index do |row, row_idx|
       row.each_with_index do |tile, tile_idx|
-        board_string = " # "
         if @cursor.cursor_pos == [row_idx, tile_idx]
-          board_string = board_string.colorize(:green)
+          output << tile.to_s.colorize(:green)
+        else
+          output << tile.to_s
         end
-        output << board_string
       end
       output << "\n"
     end
+    
     puts output
     puts "-" * 24
   end
 
   def user_get_input
-    @cursor.get_input
+    15.times do
+      @cursor.get_input
+      render
+    end
   end
 
   def show_board
@@ -38,6 +42,4 @@ class Display
 end
 
 d = Display.new()
-d.render
 d.user_get_input
-d.render
