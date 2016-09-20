@@ -14,4 +14,8 @@ class NullPiece
   def empty?
     true
   end
+
+  def color
+    :purple
+  end
 end

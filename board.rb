@@ -22,20 +22,19 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
-    make_starting_grid
   end
 
   def make_starting_grid
     # byebug
-    # PIECES.each do |piece, positions|
-    #   offset = piece == "Pawn" ? 5 : 7
-    #   positions.each do |pos|
-    #     piece1 = Object.const_get(piece).new(:black, self, pos)
-    #     piece2 = Object.const_get(piece).new(:white, self, [pos[0] + offset, pos[1]])
-    #     add_piece(piece1)
-    #     add_piece(piece2)
-    #   end
-    # end
+    PIECES.each do |piece, positions|
+      offset = piece == "Pawn" ? 5 : 7
+      positions.each do |pos|
+        piece1 = Object.const_get(piece).new(:black, self, pos)
+        piece2 = Object.const_get(piece).new(:white, self, [pos[0] + offset, pos[1]])
+        add_piece(piece1)
+        add_piece(piece2)
+      end
+    end
     fill_nulls
     @grid
   end
@@ -51,20 +50,25 @@ class Board
   end
 
   def move_piece(color, start, end_pos)
-      raise "Empty square, try a new start position" if self[start].is_a?(NullObject)
+      raise "Empty square, try a new start position" if self[start].is_a?(NullPiece)
       raise "occupied" if self[start].color == self[end_pos].color
+      raise "Not a valid move" unless self[start].valid_moves.include?(end_pos)
       self[end_pos] = self[start]
       self[start].position = end_pos
-      self[start] = NullObject
-    rescue RunTimeError => e
+      self[start] = NullPiece.instance
+    rescue RuntimeError => e
       puts e.message
 
   end
 
-
-
-  def make_startin_grid
-    positions.each{ |pos| self[pos] = NullPiece.instance }
+  def move_piece!(color, start, end_pos)
+      raise "Empty square, try a new start position" if self[start].is_a?(NullPiece)
+      raise "occupied" if self[start].color == self[end_pos].color
+      self[end_pos] = self[start]
+      self[start].position = end_pos
+      self[start] = NullPiece.instance
+    rescue RuntimeError => e
+      puts e.message
   end
 
   def positions
@@ -76,29 +80,43 @@ class Board
   end
 
   def in_check?(color)
-    attack_range(color).find{|pos| pos == king.pos }.nil? ? false : true
+    attack_range(color).find{ |pos| pos == king(color).pos }.nil? ? false : true
   end
 
-  def check_mate?(color)
-    king = find_king
+  def checkmate?(color)
     if in_check?(color)
-      @self[king].valid_moves.all?{|move| attack_range(color).include?(move)}
+      king(color).valid_moves.all?{|move| attack_range(color).include?(move)}
     end
   end
 
   def attack_range(color)
-    # byebug
     attacks = []
     @grid.each do |row|
       row.each do |tile|
-        unless tile.color == color && tile.is_a?(NullPiece)
-          attacks.concat(tile.valid_moves)
+        unless tile.is_a?(NullPiece) || tile.color == color
+          attacks.concat(tile.attacks)
         end
       end
     end
     attacks
   end
 
+  def deep_dup
+    fake_board = Board.new()
+
+    @grid.each_with_index do |row, idx|
+      row.each_with_index do |tile, tile_idx|
+        if tile.is_a?(NullPiece)
+          fake_board[[idx,tile_idx]] = NullPiece.instance
+        else
+          piece = tile.class.new(tile.color, fake_board,tile.position)
+          fake_board.add_piece(piece)
+        end
+      end
+    end
+
+    fake_board
+  end
 
   def king(color)
     @grid.flatten.find{ |piece| piece.is_a?(King) && color == piece.color}
@@ -117,6 +135,8 @@ class Board
 end
 
 b = Board.new()
-b.add_piece(King.new(:white, b ,[0,0]))
-b.add_piece(Queen.new(:black,b ,[1,0]))
-p b.in_check?(:white)
+b.add_piece(King.new(:white, b, [0,0]))
+b.add_piece(Rook.new(:white, b, [1,0]))
+b.add_piece(Queen.new(:black, b, [7,0]))
+b.fill_nulls
+p b[[1,0]].valid_moves
