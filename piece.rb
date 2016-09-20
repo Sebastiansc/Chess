@@ -1,26 +1,33 @@
 class Piece
 
-  
-  def initialize(color, board)
+
+  def initialize(color, board, position)
     @color = color
     @board = board
-    @pos = []
+    @moves = []
+    @position = position
   end
 
   def to_s
-
+    symbol
   end
 
   def empty?
-
+    false
   end
 
-  def symbol(sym)
+  def valid_moves
+    valids = []
 
+    @moves.each do |pos|
+      valids << pos if @board[pos].empty? || @board[pos].color != color
+    end
+
+    valids
   end
 
-  def valid_moves(current_pos)
-
+  def get_moves
+    @pos = move_dirs
   end
 
   private

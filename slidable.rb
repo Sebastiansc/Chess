@@ -34,24 +34,17 @@ module Slidable
           move = [move[0] + direction[0], move[1] + direction[1]]
         end
       end
-      
+
       moves
     end
 
     def in_bounds(move)
       move.none? {|pos| pos > 7 || pos < 0}
     end
-
-
 end
 
 class Queen < Piece
   include Slidable
-
-  def initialize(color, position)
-    @color = color
-    @position = position
-  end
 
   def move_dirs
     moves = diagonal_moves + straight_moves
@@ -63,9 +56,9 @@ end
 
 class Bishop < Piece
   include Slidable
-  def initialize(color, position)
-    @color = color
-    @position = position
+
+  def symbol()
+    " I "
   end
 
   def move_dirs
@@ -76,11 +69,11 @@ end
 
 class Rook < Piece
   include Slidable
-  def initialize(color, position)
-    @color = color
-    @position = position
-  end
 
+  def symbol
+
+  end
+  
   def move_dirs
     moves = straight_moves
   end

@@ -35,6 +35,10 @@ class Knight < Piece
     [-1 , 2]
   ]
 
+  def symbol
+    @color == :white ? ♘ : ♞
+  end
+
   def initialize(color, position)
     @color = color
     @position = position
