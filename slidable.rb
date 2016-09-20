@@ -1,6 +1,3 @@
-
-require_relative 'piece'
-require_relative 'board'
 require 'byebug'
 
 module Slidable
@@ -46,38 +43,8 @@ module Slidable
     end
 end
 
-class Queen < Piece
-  include Slidable
 
-  def move_dirs
-    moves = diagonal_moves.merge(straight_moves)
-  end
-end
 
-class Bishop < Piece
-  include Slidable
-
-  def symbol()
-    " I "
-  end
-
-  def move_dirs
-    moves = diagonal_moves
-  end
-
-end
-
-class Rook < Piece
-  include Slidable
-
-  def symbol
-
-  end
-
-  def move_dirs
-    moves = straight_moves
-  end
-end
 
 # board = Board.new
 # board.add_piece(Queen.new(:black, board, [2,2]))

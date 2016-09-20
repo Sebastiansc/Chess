@@ -8,7 +8,7 @@ class NullPiece
   end
 
   def to_s
-    " X "
+    " # "
   end
 
   def empty?

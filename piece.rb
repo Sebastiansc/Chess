@@ -1,14 +1,12 @@
 require 'byebug'
-require_relative 'board'
+# require_relative 'board'
 require_relative 'nullpiece'
 
 class Piece
 
   attr_reader :position, :color
-  def initialize(color, board, position)
+  def initialize(color, board,  position)
     @color = color
-    @board = board
-    @moves = []
     @position = position
   end
 
@@ -41,10 +39,9 @@ class Piece
     valids
   end
 
-  def get_moves
-    @pos = move_dirs
+  def pos
+    @position 
   end
-
   private
 
   def move_into_check?(to_pos)

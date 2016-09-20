@@ -23,7 +23,7 @@ class Display
       end
       output << "\n"
     end
-    
+
     puts output
     puts "-" * 24
   end
@@ -42,4 +42,5 @@ class Display
 end
 
 d = Display.new()
+d.render
 d.user_get_input

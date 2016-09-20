@@ -1,19 +1,21 @@
 require_relative 'piece'
 
-class Pawn
+class Pawn < Piece
 
-  def initialize
-    @symbol = symbol
-    @position = position
-    @start_row = position
+  def initialize(color, board, position)
+    super
+    @start_row = @position
   end
-
   def at_start_row?
     @start_row == @position
   end
 
   def forward_dir
     at_start_row? ? 2 : 1
+  end
+
+  def symbol
+    @color == :white ? " ♙ " : " ♟ "
   end
 
   def side_attacks
