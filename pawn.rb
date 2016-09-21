@@ -29,7 +29,7 @@ class Pawn < Piece
   end
 
   def move_dirs
-    if @color == :black
+    if @color == :white
       steps(1)
     else
       steps(-1)

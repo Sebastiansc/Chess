@@ -16,6 +16,7 @@ class Game
     def play
       # byebug
       until @board.checkmate?(@current_player.color)
+        puts "#{@current_player.name}'s turn!'"
         @display.render(@color)
         start = @current_player.play_turn
         end_pos = @current_player.play_turn

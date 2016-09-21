@@ -33,7 +33,7 @@ class Display
   end
 
   def piece_moves(color)
-    if @board[@cursor.cursor_pos].color != color
+    if @board[@cursor.cursor_pos].color == color
       @board[@cursor.cursor_pos].valid_moves
     else
       []

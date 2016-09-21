@@ -30,8 +30,8 @@ class Board
     PIECES.each do |piece, positions|
       offset = piece == "Pawn" ? 5 : 7
       positions.each do |pos|
-        piece1 = Object.const_get(piece).new(:black, self, pos)
-        piece2 = Object.const_get(piece).new(:white, self, [pos[0] + offset, pos[1]])
+        piece1 = Object.const_get(piece).new(:white, self, pos)
+        piece2 = Object.const_get(piece).new(:black, self, [pos[0] + offset, pos[1]])
         add_piece(piece1)
         add_piece(piece2)
       end
@@ -51,9 +51,11 @@ class Board
   end
 
   def move_piece(color, start, end_pos)
+    # byebug
       raise "Empty square, try a new start position" if self[start].is_a?(NullPiece)
       raise "occupied" if self[start].color == self[end_pos].color
       raise "Not a valid move" unless self[start].valid_moves.include?(end_pos)
+      raise "This is not your piece!" unless self[start].color == color
       self[end_pos] = self[start]
       self[start].position = end_pos
       self[start] = NullPiece.instance
