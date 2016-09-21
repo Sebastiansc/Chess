@@ -16,7 +16,7 @@ class Game
     def play
       # byebug
       until @board.checkmate?(@current_player.color)
-        @display.render
+        @display.render(@color)
         start = @current_player.play_turn
         end_pos = @current_player.play_turn
         @board.move_piece(@current_player.color, start, end_pos)

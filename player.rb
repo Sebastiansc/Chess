@@ -12,8 +12,9 @@ class Player
   def play_turn
     pos = nil
     loop do
+      # byebug
       pos = @display.cursor.get_input
-      @display.render
+      @display.render(@color)
       break if pos
     end
     pos

@@ -72,10 +72,6 @@ class Board
       puts e.message
   end
 
-  def positions
-    @positions ||= (0..7).to_a.repeated_permutation(2).to_a
-  end
-
   def in_bounds(pos)
     pos.none? {|position| position > 7 || position < 0}
   end
