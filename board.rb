@@ -22,6 +22,7 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
+    make_starting_grid
   end
 
   def make_starting_grid
@@ -92,6 +93,7 @@ class Board
   def attack_range(color)
     attacks = []
     @grid.each do |row|
+      # byebug if row == 0
       row.each do |tile|
         unless tile.is_a?(NullPiece) || tile.color == color
           attacks.concat(tile.attacks)
@@ -134,9 +136,9 @@ class Board
 
 end
 
-b = Board.new()
-b.add_piece(King.new(:white, b, [0,0]))
-b.add_piece(Rook.new(:white, b, [1,0]))
-b.add_piece(Queen.new(:black, b, [7,0]))
-b.fill_nulls
-p b[[1,0]].valid_moves
+# b = Board.new()
+# b.add_piece(King.new(:white, b, [0,0]))
+# b.add_piece(Rook.new(:white, b, [1,0]))
+# b.add_piece(Queen.new(:black, b, [7,0]))
+# b.fill_nulls
+# p b[[1,0]].valid_moves

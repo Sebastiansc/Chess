@@ -27,7 +27,6 @@ class Piece
   def attacks
     moves = move_dirs
     valids = []
-
     moves.each do |key, value|
       value.each do |pos|
         if @board[pos].is_a?(NullPiece)
@@ -44,10 +43,10 @@ class Piece
     valids
   end
 
-
   def pos
     @position
   end
+
   private
 
   def move_into_check?(to_pos)

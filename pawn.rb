@@ -6,6 +6,7 @@ class Pawn < Piece
     super
     @start_row = @position
   end
+
   def at_start_row?
     @start_row == @position
   end
@@ -14,16 +15,36 @@ class Pawn < Piece
     at_start_row? ? 2 : 1
   end
 
+  def move_dirs
+    if at_start_row?
+         [
+          [@position[0] + 1, position[1]],
+          [@position[0] + 2, position[1]]
+        ]
+    else
+      [[@position[0], position[1] + 1]]
+    end
+  end
+
+  def valid_moves
+    # byebug
+    forward = move_dirs.select { |pos| @board[pos].is_a?(NullPiece) }
+    forward + attacks
+  end
+
   def symbol
     @color == :white ? " ♙ " : " ♟ "
   end
 
-  def side_attacks
-    [
+  def attacks
+    # byebug
+    pos = [
       [@position[0] + 1, @position[1] + 1],
       [@position[0] + 1, @position[1] - 1]
-    ].select do |pos|
-      @board[pos].color != color && !@board[pos].is_a?(NullObject)
+    ]
+    pos = pos.reject { |pos| pos.any? { |n| n < 0 || n > 7} }
+    pos.select do |pos|
+      @board[pos].color != color && !@board[pos].is_a?(NullPiece)
     end
   end
 
